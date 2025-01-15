@@ -4,7 +4,7 @@ This repository contains interactive graphs that accompany the book [*Data Analy
 
 ## Installation
 
-To use the interactive graphs, start by opening RStudio and installing the necessary packages:
+To access the interactive graphs, open RStudio and install the necessary packages by running the following code:
 
     install.packages("remotes")
     remotes::install_github("ellaudet/interactivegraphs")
@@ -45,4 +45,4 @@ Any errors in these graphs are my responsibility. If you encounter any issues or
 
 ---
 
-*I hope these interactive graphs prove useful to you and your students!* - Elena
+*I hope these interactive graphs are helpful to you and your students!* - Elena
