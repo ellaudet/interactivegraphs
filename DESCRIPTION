@@ -1,0 +1,16 @@
+Package: interactivegraphs
+Type: Package
+Title: Interactive Graphs for Data Analysis for Social Science
+Version: 0.1.0
+Author: Elena Llaudet
+Maintainer: Elena Llaudet <ellaudet@gmail.com>
+Description: Interactive Graphs for Data Analysis for Social Science
+    Use four spaces when indenting paragraphs within the Description.
+License: What license is it under?
+Encoding: UTF-8
+LazyData: true
+Imports: 
+    shiny
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
