@@ -11,18 +11,43 @@ remotes::install_github("ellaudet/interactivegraphs")
 
 Then, run the code related to the interactive graph you are interested in.
 
+- To start the graph that relates to *Random Treatment Assignment* run:
+
 ``` r
-## Here is the code to start the graph that relates to *Random Treatment Assignment*:
 shiny::runApp(appDir = system.file("shinyapps/random_treatment_assignment", package = "interactivegraphs"))
 ```
 
+- To start the graph that relates to *Random Sampling* run:
 
+``` r
+shiny::runApp(appDir = system.file("shinyapps/random_sampling", package = "interactivegraphs"))
+```
 
-Once you are done playing with the interactive graph, to exit it either close the window or press esc.
+To start the graph that relates to *Means and Standard Deviations* run:
 
 ``` r
 shiny::runApp(appDir = system.file("shinyapps/mean_sd", package = "interactivegraphs"))
 ```
+
+To start the graph that relates to *Correlation* run:
+
+``` r
+shiny::runApp(appDir = system.file("shinyapps/correlation", package = "interactivegraphs"))
+```
+
+To start the graph that relates to the *Linear Regression Model* run:
+
+``` r
+shiny::runApp(appDir = system.file("shinyapps/linear_model", package = "interactivegraphs"))
+```
+
+To start the graph that relates to the *Least Squares Method* run:
+
+``` r
+shiny::runApp(appDir = system.file("shinyapps/least_squares_method", package = "interactivegraphs"))
+```
+
+Once you are done playing with the interactive graph, to exit it either close the window or press esc.
 
 Any errors found in these interactive graphs are my own. If you find any, I would really appreciate it if you could let me know by sending me an email at [ellaudet@gmail.com](ellaudet@gmail.com). Thank you! 
 
