@@ -23,25 +23,25 @@ shiny::runApp(appDir = system.file("shinyapps/random_treatment_assignment", pack
 shiny::runApp(appDir = system.file("shinyapps/random_sampling", package = "interactivegraphs"))
 ```
 
-To start the graph that relates to *Means and Standard Deviations* run:
+- To start the graph that relates to *Means and Standard Deviations* run:
 
 ``` r
 shiny::runApp(appDir = system.file("shinyapps/mean_sd", package = "interactivegraphs"))
 ```
 
-To start the graph that relates to *Correlation* run:
+- To start the graph that relates to *Correlation* run:
 
 ``` r
 shiny::runApp(appDir = system.file("shinyapps/correlation", package = "interactivegraphs"))
 ```
 
-To start the graph that relates to the *Linear Regression Model* run:
+- To start the graph that relates to the *Linear Regression Model* run:
 
 ``` r
 shiny::runApp(appDir = system.file("shinyapps/linear_model", package = "interactivegraphs"))
 ```
 
-To start the graph that relates to the *Least Squares Method* run:
+- To start the graph that relates to the *Least Squares Method* run:
 
 ``` r
 shiny::runApp(appDir = system.file("shinyapps/least_squares_method", package = "interactivegraphs"))
