@@ -12,7 +12,13 @@ remotes::install_github("ellaudet/interactivegraphs")
 Then, to start the graph that relates to *Random Treatment Assignment*, run the following piece of R code:
 
 ``` r
-shiny::runApp(appDir = system.file("shinyapps/app1", package = "interactivegraphs"))
+shiny::runApp(appDir = system.file("shinyapps/random_treatment_assignment", package = "interactivegraphs"))
+```
+
+Once you are done playing with the interactive graph, to exit it either close the window or press esc.
+
+``` r
+shiny::runApp(appDir = system.file("shinyapps/mean_sd", package = "interactivegraphs"))
 ```
 
 Any errors found in these interactive graphs are my own. If you find any, I would really appreciate it if you could let me know by sending me an email at [ellaudet@gmail.com](ellaudet@gmail.com). Thank you! 
