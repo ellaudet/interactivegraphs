@@ -9,11 +9,14 @@ install.packages("remotes")
 remotes::install_github("ellaudet/interactivegraphs")
 ```
 
-Then, to start the graph that relates to *Random Treatment Assignment*, run the following piece of R code:
+Then, run the code related to the interactive graph you are interested in.
 
 ``` r
+## Here is the code to start the graph that relates to *Random Treatment Assignment*:
 shiny::runApp(appDir = system.file("shinyapps/random_treatment_assignment", package = "interactivegraphs"))
 ```
+
+
 
 Once you are done playing with the interactive graph, to exit it either close the window or press esc.
 
