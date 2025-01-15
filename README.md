@@ -12,5 +12,5 @@ remotes::install_github("ellaudet/interactivegraphs")
 Then, to start the graph that relates to *Random Treatment Assignment*, run the following piece of R code:
 
 ``` r
-shiny::runApp(appDir = system.file("shinyapps/app1", package = "interactivegraphs")
+shiny::runApp(appDir = system.file("shinyapps/app1", package = "interactivegraphs"))
 ```
