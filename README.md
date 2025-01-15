@@ -39,7 +39,7 @@ You can launch each interactive graph by running its corresponding R code in RSt
 
 To exit an interactive graph, you can close the browser window or press `Esc`.
 
-## Feedback and Errors
+## Feedback
 
 Any errors in these graphs are my responsibility. If you encounter any issues or have suggestions for improvements, please contact me at [ellaudet@gmail.com](mailto:ellaudet@gmail.com). Your feedback is highly appreciated!
 
