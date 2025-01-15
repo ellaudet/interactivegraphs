@@ -14,3 +14,7 @@ Then, to start the graph that relates to *Random Treatment Assignment*, run the 
 ``` r
 shiny::runApp(appDir = system.file("shinyapps/app1", package = "interactivegraphs"))
 ```
+
+Any errors found in these interactive graphs are my own. If you find any, I would really appreciate it if you could let me know by sending me an email at [ellaudet@gmail.com](ellaudet@gmail.com). Thank you! 
+
+*I hope these interactive graphs are helpful to you and/or your students!* - Elena
