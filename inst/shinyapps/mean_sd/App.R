@@ -101,7 +101,7 @@ ui = fluidPage(
       )
     ),
 
-  ## Text After Sidebar
+  ## Text After Graph
   headerPanel(""), ## to add blank space before graph
   helpText("Notes about the graph:
         The density histogram of a variable is the visual representation
