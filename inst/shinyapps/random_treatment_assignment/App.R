@@ -2,163 +2,215 @@ library(shiny)
 
 ## Define UI
 ui = fluidPage(
-  
-        ## App Title
-        headerPanel(""), 
-        helpText(HTML("<b>"), "Interactive Graph: Random Treatment Assignment", HTML("</b>"), 
-                 style = "margin:0; font-size: 22px; color: #ea3a44"),
-        helpText("By Elena Llaudet, co-author of", 
-                 a(HTML("<em>"), "Data Analysis for Social Science: A Friendly and Practical Introduction", HTML("</em>"), "(Princeton University Press)",
-                   target = "_blank",
-                   href = "https://bit.ly/dss_book", 
-                   style = "color: #797979"
-                 ), style = "font-size: 18px; color: #797979; margin:0"),
-        helpText(HTML("<br>"), style = "font-size:2px"),
-        
-        ## Framed Text
-        helpText("Random treatment assignment makes treatment and control groups comparable 
-                     when the sample size is large enough.",
-                 style = "text-align: left; font-size: 16px; color: #333333; border-width:3px; 
-                  border-style:solid; border-color:#ea3a44; padding-top: 0.5em; 
-                  padding-bottom: 0.5em; padding-right: 1em; padding-left:1em"), 
-        helpText(HTML("<br>"), style = "font-size:2px"),
-        
-        ## Explanation
-        helpText("For illustration purposes, suppose there were only five types of individuals 
-                     in the world: orange, 
-                     blue, pink, green, and purple. If we were to assign individuals to two 
-                     different groups--the treatment group and the control group--at random 
-                     (that is, through a random process such as the flip of a coin), the two 
-                     groups would contain similar proportions of each type of individual 
-                     as long as the sample size is large enough.", 
-                 style = "font-size: 16px; color: #333333"),
-        helpText("Let's examine this further:", style = "font-size: 16px; color: #333333"),
-        
-        ## Steps
-        helpText(HTML("<ul> <li> <b>"), "STEP 1.", HTML("</b>"), 
-                 "Look at the graph below and notice that when the sample size is of 20 individuals 
-                     (4 orange, 2 blue, 4 pink, 6 green, and 4 purple), the treatment group might end up 
-                     with all the pink individuals and the control group might end up with all the 
-                     blue individuals, making the two groups clearly not comparable even though the 
-                     groups were created at random. 
-                     When the sample size is very small, the two groups will likely be different 
-                     because the sample size is simply too small to create two groups with similar 
-                     compositions", 
-                 HTML("</li>"), style = "font-size: 16px; color: #333333"),
-        
-        helpText(HTML("<li> <b>"), "STEP 2.", HTML("</b>"), 
-                 "Now, move the slide to increase the sample size
-                     and observe how the composition of the treatment and control groups start 
-                     to approximate each other as a result. (Once you let go of the slide, 
-                     R will assign the number of individuals that you have chosen to the 
-                     two groups at random, and reproduce the histograms
-                     showing you the results.) Try different sample sizes between 20 and 300.",  
-                 HTML("</li>"), style = "font-size: 16px; color: #333333"),
-        
-        helpText(HTML("<li> <b>"), "STEP 3.", HTML("</b>"), 
-                 "Increase the sample size to 300 and notice 
-                     that the composition of the two groups are now quite similar. 
-                     They should now be both composed of roughly 20% 
-                     orange individuals, 10% blue individuals, 20% pink individuals, 
-                     30% green individuals, and 20% purple individuals 
-                     (i.e., the same proportions found in the full sample). This is
-                     because by assigning individuals to the two groups at random, 
-                     about half of the individuals
-                     from each type end up in the treatment group, and the other 
-                     half end up in the control group.",  
-                 HTML("</li></ul>"), style = "font-size: 16px; color: #333333"),
-        
-        helpText("This explains why in randomized experiments, in which, by definition, we assign individuals to treatment and control groups at random, the two groups should be comparable, that is, have similar pre-treatment characteristics, on average, if the sample size is large enough.", style = "font-size: 16px; color: #333333"),
-        headerPanel(""), ## to add blank space before graph
 
-        ## Sidebar Layout with Inputs and Outputs
-        sidebarLayout(
-          
-          ## Sidebar Panel for Inputs
-          sidebarPanel(
-            
-            ## Input
-            sliderInput(
-              inputId = "sample_size",
-              label = "Sample Size (n)",
-              min = 20,
-              max = 300,
-              value = 20
-            )
-            
-          ),
-          
-          ## Main Panel for Displaying Outputs
-          mainPanel(
-            
-            ## Output: Graph
-            plotOutput(outputId = "distPlot")
-          )
-        ),
+  ## Match sidebar background to framed text
+  tags$head(
+    tags$style(HTML("
+      .well {
+        background-color: #f1f3f5 !important;
+        border: none;
+        box-shadow: none;
+      }
+    "))
+  ),
 
-        ## Text After Graph
-        headerPanel(""), ## to add blank space before graph
-        helpText("Notes about the graph: 
-            The histrograms show the number of individuals from each type that 
-            are in (a) the full sample, (b) the treatment group, and (c) the control group.
-            Notice that n stands for the total number of individuals in the sample, n_t stands 
-            for the total number of individuals in the treatment group, 
-            and n_c stands for the total number of individuals in the control group.", 
-                 style = "font-size: 16px; color: #333333"),
+  ## App Title
+  h3("Interactive Graph: Random Treatment Assignment",
+     style = "color: #ea3a44; text-align: center; margin-bottom: 0px;"),
+  p("By Elena Llaudet, co-author of ",
+    a("Data Analysis for Social Science", href = "https://bit.ly/dss_textbook", target = "_blank", style = "color: #797979; text-decoration: none; font-style: italic;"),
+    " (DSS)", style = "text-align: center; color: #797979; margin-bottom: 15px; font-size: 18px;"),
+
+  ## Framed Text
+  div(style = "background-color: #f1f3f5;
+              border-left: 4px solid #ea3a44;
+              padding: 15px;
+              margin-bottom: 15px;",
+      p("Random treatment assignment makes treatment and control groups comparable when sample size is large enough.",
+        style = "margin: 0; font-size: 16px; color: #333333;")),
+
+  ## Explanation
+  helpText("Imagine five types of individuals: orange, blue, pink, green, and purple.
+                 If we randomly assign them to treatment and control groups, both groups
+                 will end up with similar proportions of each type of individual as long as the sample size
+              is large enough. Let's take a closer look:",
+           style = "font-size: 16px; color: #333333; margin-bottom: 15px"),
+
+  ## Steps - All in one block for consistent spacing
+  helpText(HTML("
+    <ul style='line-height: 1.4;'>
+      <li style='margin-bottom: 10px;'><b style='color: #ea3a44;'>STEP 1:</b>
+          Look at the graphs below. With 20 individuals (20% orange, 10% blue, 20% pink,
+          30% green, 20% purple), the treatment group might end up with all the pink
+          individuals while the control group gets all the blue ones, making the groups
+          clearly not comparable even with random assignment.
+      </li>
+
+      <li style='margin-bottom: 10px;'><b style='color: #ea3a44;'>STEP 2:</b>
+          Now move the slider to increase sample size and observe how the treatment
+          and control groups start to look more similar.
+          Try different values between 20 and 300.
+          (Once you release the slider, R automatically randomly assigns individuals to the two groups and updates the graphs.)
+      </li>
+
+      <li style='margin-bottom: 10px;'><b style='color: #ea3a44;'>STEP 3:</b>
+          Increase the sample size to 300 and notice that both groups now have roughly
+          the same proportions: 20% orange, 10% blue, 20% pink, 30% green, 20% purple.
+          Random assignment splits each type roughly in half between the two groups, making them comparable.
+      </li>
+    </ul>
+  "), style = "font-size: 16px; color: #333333"),
+
+  br(), ## to add blank space before graph
+
+  ## Sidebar Layout with Inputs and Outputs
+  sidebarLayout(
+
+    ## Sidebar Panel for Inputs
+    sidebarPanel(
+
+      ## Label
+      HTML("<span style='color: #333333; font-size: 15px; display: inline-block; margin-bottom: 2px;'>Sample Size:</span>"),
+
+      ## Explanation (moved here)
+      p("Move the slider to see how random assignment creates comparable groups as sample size increases.",
+        style = "font-size: 14px; color: #666; text-align: left; margin-top: 0px; margin-bottom: 10px;"),
+
+      ## Slider
+      sliderInput(
+        inputId = "sample_size",
+        label = NULL,
+        min = 20,
+        max = 300,
+        value = 20
       )
+    ),
 
-      ## Define Server Logic Required to Draw the Graph
+    ## Main Panel for Displaying Outputs
+    mainPanel(
+
+      ## Output: Graph (aligned with top of slider)
+      plotOutput(outputId = "distPlot", height = "400px"),
+
+      ## Text After Graph
+      helpText("Note: n is the total sample size, n_t is the number of individuals in the treatment group, and n_c is the number in the control group.",
+               style = "font-size: 15px; color: #666; margin-top: 10px;")
+    )
+  ),
+)
+
+## Define Server Logic Required to Draw the Graph
 server = function(input, output) {
-  
+
   ## Graph
   output$distPlot <- renderPlot({
-    
+
     n <- input$sample_size
-    volunteers <- c(rep(0, n * 0.2), rep(2, n * 0.1), rep(3, n * 0.2), rep(4, n * 0.3), rep(5, n * 0.2))
+    # Create factor data but convert to numeric for hist() compatibility
+    types <- factor(c(rep("Orange", n * 0.2), rep("Blue", n * 0.1), rep("Pink", n * 0.2),
+                      rep("Green", n * 0.3), rep("Purple", n * 0.2)),
+                    levels = c("Orange", "Blue", "Pink", "Green", "Purple"))
+    volunteers <- as.numeric(types)  # Convert to numeric for hist()
+
     set.seed(678)
     treated <- sample(c(0, 1), size = length(volunteers), replace = TRUE, prob = c(0.5, 0.5))
     data <- data.frame(volunteers, treated)
-    my_colors <- c("darkorange", "royalblue", "deeppink", "seagreen3", "blueviolet")
-    
-    par(mfrow = c(1, 3), cex = 1, mar = c(1, 5, 3, 2))
-    
+    my_colors <- c(
+      "Orange" = "#e34a33",
+      "Blue"   = "#1f78b4",
+      "Pink"   = "#f781bf",
+      "Green"  = "#33a02c",
+      "Purple" = "#6a3d9a"
+    )
+
+    # Adjusted layout to align main titles with slider top
+    par(mfrow = c(1, 3), cex = 1.2, mar = c(5, 4, 3, 2), oma = c(0, 0, 0, 0))
+
+    # Calculate max y value for consistent alignment
+    max_y <- max(n/3 + 0.15 * n, 10)
+
+    # Full Sample
     hist(data$volunteers,
-         breaks = 6, main = "",
-         xlab = "", col = my_colors, ylim = c(0, n / 3 + 0.10 * n), axes = F, border = "white")
-    
-    mtext("Full Sample",
-          side = 3, line = 1.5, outer = FALSE, adj = 0.5, cex = 1.1, font = 2)
-    
-    mtext(paste("(n = ", length(data$volunteers), ")", sep = ""),
-          side = 3, line = 0, outer = FALSE, adj = 0.5, cex = 1.1, font = 1)
-    
-    axis(2, col = "gray17", col.ticks = "gray", col.axis = "gray17", tck = -0.05)
-    
+         breaks = c(0.5, 1.5, 2.5, 3.5, 4.5, 5.5),
+         main = "Full Sample",
+         xlab = "",
+         ylab = "",
+         col = my_colors,
+         col.main="#333333",
+         col.axis ="#333333",
+         ylim = c(0, max_y),
+         border = "white",
+         xaxt = "n",
+         yaxt = "n",
+         cex.main = 1.1)  # Smaller title
+
+    # Add y-axis
+    axis(2, cex.axis = 1.1, col.axis = "#333333")
+
+    # Position "Count" at the actual top y-axis value
+    mtext("count", side = 2, line = 2.5, at = max_y * 0.95, cex = 1.1, col = "#333333")
+
+    # Add custom x-axis labels closer to axis with horizontal line
+    axis(1, at = 1:5, labels = c("orange", "blue", "pink", "green", "purple"),
+         cex.axis = 1.0, las = 2, tick = TRUE, line = 0, col = "#333333", col.axis = "#333333")
+
+    # Add sample size annotation positioned below main title
+    mtext(paste("n =", length(data$volunteers)), side = 3, line = 0, cex = 1.3, col = "#333333")
+
+    # Treatment Group
     hist(data$volunteers[data$treated == 1],
-         breaks = 6,
-         main = "", xlab = "", col = my_colors, ylim = c(0, n / 3 + 0.10 * n), axes = F, border = "white")
-    
-    mtext("Treatment Group",
-          side = 3, line = 1.5, outer = FALSE, adj = 0.5, cex = 1, font = 2)
-    
-    mtext(paste("(n_t = ", length(data$volunteers[data$treated == 1]), ")", sep = ""),
-          side = 3, line = 0, outer = FALSE, adj = 0.5, cex = 1, font = 1)
-    
-    axis(2, col = "gray17", col.ticks = "gray", col.axis = "gray17", tck = -0.05)
-    
+         breaks = c(0.5, 1.5, 2.5, 3.5, 4.5, 5.5),
+         main = "Treatment Group",
+         xlab = "",
+         ylab = "",
+         col = my_colors,
+         col.main = "#333333",
+         col.axis = "#333333",
+         ylim = c(0, max_y),
+         border = "white",
+         xaxt = "n",
+         yaxt = "n",
+         cex.main = 1.1)  # Smaller title
+
+    # Add y-axis
+    axis(2, cex.axis = 1.1, col.axis = "#333333")
+
+    mtext("count", side = 2, line = 2.5, at = max_y * 0.95, cex = 1.1, col = "#333333")
+
+    axis(1, at = 1:5, labels = c("orange", "blue", "pink", "green", "purple"),
+         cex.axis = 1.0, las = 2, tick = TRUE, line = 0, col = "#333333", col.axis = "#333333")
+
+    mtext(paste("n_t =", length(data$volunteers[data$treated == 1])),
+          side = 3, line = 0, cex = 1.3, col = "#333333")
+
+    # Control Group
     hist(data$volunteers[data$treated == 0],
-         breaks = 6, main = "",
-         xlab = "", col = my_colors, ylim = c(0, n / 3 + 0.10 * n), axes = F, border = "white")
-    
-    mtext("Control Group",
-          side = 3, line = 1.5, outer = FALSE, adj = 0.5, cex = 1, font = 2)
-    
-    mtext(paste("(n_c = ", length(data$volunteers[data$treated == 0]), ")", sep = ""),
-          side = 3, line = 0, outer = FALSE, adj = 0.5, cex = 1, font = 1)
-    
-    axis(2, col = "gray17", col.ticks = "gray", col.axis = "gray17", tck = -0.05)
-            })
-      }
+         breaks = c(0.5, 1.5, 2.5, 3.5, 4.5, 5.5),
+         main = "Control Group",
+         xlab = "",
+         ylab = "",
+         col = my_colors,
+         col.main = "#333333",
+         col.axis = "#333333",
+         ylim = c(0, max_y),
+         border = "white",
+         xaxt = "n",
+         yaxt = "n",
+         cex.main = 1.1)  # Smaller title
+
+    # Add y-axis
+    axis(2, cex.axis = 1.1, col.axis = "#333333")
+
+    mtext("count", side = 2, line = 2.5, at = max_y * 0.95, cex = 1.1, col = "#333333")
+
+    axis(1, at = 1:5, labels = c("orange", "blue", "pink", "green", "purple"),
+         cex.axis = 1.0, las = 2, tick = TRUE, line = 0, col = "#333333", col.axis = "#333333")
+
+    mtext(paste("n_c =", length(data$volunteers[data$treated == 0])),
+          side = 3, line = 0, cex = 1.3, col = "#333333")
+
+  }, bg = "white")
+}
 
 ## Create Shiny App
 shinyApp(ui = ui, server = server)

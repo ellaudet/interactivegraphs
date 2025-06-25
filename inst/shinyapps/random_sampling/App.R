@@ -3,143 +3,154 @@ library(shiny)
 ## Define UI
 ui = fluidPage(
 
-    ## App Title
-    headerPanel(""), 
-    helpText(HTML("<b>"), "Interactive Graph: Random Sampling", HTML("</b>"), 
-             style = "margin:0; font-size: 22px; color: #ea3a44"),
-    helpText("By Elena Llaudet, co-author of", 
-             a(HTML("<em>"), "Data Analysis for Social Science: A Friendly and Practical Introduction", 
-             HTML("</em>"), "(Princeton University Press)",
-             target = "_blank",href = "https://bit.ly/dss_book", style = "color: #797979"), 
-             style = "font-size: 18px; color: #797979; margin:0"),
-    helpText(HTML("<br>"), style = "font-size:2px"),
-    
-    ## Framed Text
-    helpText("Random sampling creates a representative sample of the target population when the sample size is large enough.",
-             style = "text-align: left; font-size: 16px; color: #333333; border-width:3px; 
-                  border-style:solid; border-color:#ea3a44; padding-top: 0.5em; 
-                  padding-bottom: 0.5em; padding-right: 1em; padding-left:1em"), 
-    helpText(HTML("<br>"), style = "font-size:2px"),
-    
-    ## Explanation and Steps
-    helpText("For illustration purposes, suppose there were only five types of individuals 
-           in the world: orange, blue, pink, green, and purple.
-           If we randomly select individuals from the population into a sample,
-           the resulting sample will be representative of the population (that is, the sample will accurately 
-           reflect the characteristics of the population), as long as the sample size is large enough.",
-           style = "font-size: 16px; color: #333333"),
-    helpText("Let's examine this further:", style = "font-size: 16px; color: #333333"),
-    
-    helpText(HTML("<ul> <li> <b>"), "STEP 1.", HTML("</b>"), 
-             "Look at the graph below and notice that when when we draw a random sample of 20 individuals 
-             from a target population of 1,000 individuals, 
-           the sample might end up without a single blue individual eventhough the sample was created 
-           through random sampling.
-            When the sample size is very small, the sample will likely 
-             not be representative of the population
-           because the sample size is simply too small to create a subset 
-           of individuals with a similar composition as the population",
-             HTML("</li>"), style = "font-size: 16px; color: #333333"),
-    
-    helpText(HTML("<li> <b>"), "STEP 2.", HTML("</b>"),
-             "Now, move the slide to increase the sample size and observe how the composition of the 
-             sample starts to approximate the composition of the population as a result.
-             (Once you let go of the slide, R will randomly select the number of people that you have 
-             chosen into the sample and reproduce the histograms showing you the results.) 
-             Try different sample sizes between 20 and 300.",
-             HTML("</li>"), style = "font-size: 16px; color: #333333"),
-  
-    helpText(HTML("<li> <b>"), "STEP 3.", HTML("</b>"), 
-            "Increase the sample size to 300 and notice 
-             that the composition of the sample is now quite similar to the composition of the population.
-             They should now be both composed of roughly 20% orange individuals, 10% blue individuals, 
-           20% pink individuals, 30% green individuals, and 20% purple individuals.", 
-           HTML("</li></ul>"), style = "font-size: 16px; color: #333333"),
-  
-    headerPanel(""), ## to add blank space before graph
+  ## Match sidebar background to framed text
+  tags$head(
+    tags$style(HTML("
+      .well {
+        background-color: #f1f3f5 !important;
+        border: none;
+        box-shadow: none;
+      }
+    "))
+  ),
 
-    ## Sidebar Layout with Inputs and Outputs
-    sidebarLayout(
+  ## App Title
+  h3("Interactive Graph: Random Sampling",
+     style = "color: #ea3a44; text-align: center; margin-bottom: 0px;"),
+  p("By Elena Llaudet, co-author of ",
+    a("Data Analysis for Social Science", href = "https://bit.ly/dss_textbook", target = "_blank", style = "color: #797979; text-decoration: none; font-style: italic;"),
+    " (DSS)", style = "text-align: center; color: #797979; margin-bottom: 15px; font-size: 18px;"),
 
-      ## Sidebar Panel for Inputs
-      sidebarPanel(
+  ## Framed Text
+  div(style = "background-color: #f1f3f5;
+              border-left: 4px solid #ea3a44;
+              padding: 15px;
+              margin-bottom: 15px;",
+      p("Random sampling creates a representative sample of the target population when the sample size is large enough.",
+        style = "margin: 0; font-size: 16px; color: #333333;")),
 
-        # Input
-        sliderInput(
-          inputId = "sample_size",
-          label = "Sample Size (n)",
-          min = 20,
-          max = 300,
-          value = 20
-        )
-      ),
+  ## Explanation
+  helpText("Imagine five types of individuals: orange, blue, pink, green, and purple.
+                 If we randomly select individuals from the population into a sample, the sample
+                 will end up with similar proportions of each type of individual as long as the sample size
+                is large enough. Let's take a closer look:",
+           style = "font-size: 16px; color: #333333; margin-bottom: 15px"),
 
-      ## Main Panel for Displaying Outputs
-      mainPanel(
+  helpText(HTML("
+    <ul style='line-height: 1.4;'>
+      <li style='margin-bottom: 10px;'><b style='color: #ea3a44;'>STEP 1:</b>
+          Look at the graphs below. With 20 individuals randomly sampled from a population of 1,000,
+          the sample might end up without any blue individuals even though they represent 10% of the population,
+          making the sample clearly not representative despite random sampling.
+      </li>
 
-        # Output
-        plotOutput(outputId = "distPlot")
-      )
+      <li style='margin-bottom: 10px;'><b style='color: #ea3a44;'>STEP 2:</b>
+          Now move the slider to increase sample size and observe how the sample
+          composition starts to match the population.
+          Try different values between 20 and 300.
+          (Once you release the slider, R automatically randomly selects individuals into the sample and updates the graphs.)
+      </li>
+
+      <li style='margin-bottom: 10px;'><b style='color: #ea3a44;'>STEP 3:</b>
+          Increase the sample size to 300 and notice that the sample now has roughly
+          the same proportions as the population: 20% orange, 10% blue, 20% pink, 30% green, 20% purple.
+          Random sampling creates a representative sample when sample size is large enough.
+      </li>
+    </ul>
+  "), style = "font-size: 16px; color: #333333"),
+
+  br(),
+
+  sidebarLayout(
+    sidebarPanel(
+      HTML("<span style='color: #333333; font-size: 15px; display: inline-block; margin-bottom: 2px;'>Sample Size:</span>"),
+      p("Move the slider to see how random sampling creates representative samples as sample size increases.",
+        style = "font-size: 14px; color: #666; text-align: left; margin-top: 0px; margin-bottom: 10px;"),
+      sliderInput("sample_size", label = NULL, min = 20, max = 300, value = 20)
     ),
-    
-    ## Text After Graph
-    headerPanel(""), ## to add blank space before graph
-    helpText("Notes about the graph: 
-            The histograms show the number of individuals from each type that are in 
-             (a) the target population, and (b) the random sample of n individuals drawn from the target population.
-             Notice that N stands for the total number of individuals in the target population 
-             and n stands for the total number of individuals in the sample.",
-             style = "font-size: 16px; color: #333333"),
-    
+
+    mainPanel(
+      plotOutput("distPlot", height = "400px"),
+      helpText("Note: N is the total population size and n is the sample size.",
+               style = "font-size: 15px; color: #666; margin-top: 10px;")
+    )
   )
-  
-  ## Define Server Logic Required to Draw the Graph
-  server = function(input, output) {
-    
-    ## Graph
-    output$distPlot <- renderPlot({
-      
-      N <- 1000 # input$population_size
-      n <- input$sample_size
-      population <- c(rep(0, N * 0.2), rep(2, N * 0.1), rep(3, N * 0.2), rep(4, N * 0.3), rep(5, N * 0.2))
-      set.seed(12678)
-      selected <- sample(c(0, 1), size = length(population), replace = TRUE, prob = c(1 - n / N, n / N))
-      data <- data.frame(population, selected)
-      my_colors <- c("darkorange", "royalblue", "deeppink", "seagreen3", "blueviolet")
+)
 
-      par(mfrow = c(1, 2), cex = 1, mar = c(1, 5, 3, 2))
-      
-      hist(data$population,
-        breaks = 6,
-        main = "",
-        ylim = c(0, N / 3 + 0.10 * N), 
-        xlab = "", col = my_colors, axes = F, border = "white")
-      
-      axis(2, col = "gray17", col.ticks = "gray", col.axis = "gray17", tck = -0.05)
-      
-      mtext("Population",
-            side = 3, line = 1.5, outer = FALSE, adj = 0.5, cex = 1.1, font = 2)
-      
-      mtext(paste("(N = ", N , ")", sep = ""),
-            side = 3, line = 0, outer = FALSE, adj = 0.5, cex = 1.1, font = 1)
-      
-      hist(data$population[data$selected == 1],
-        breaks = 6, 
-        main = "",
-        ylim = c(0, n / 3 + 0.10 * n),
-        xlab = "", col = my_colors, axes = F, border = "white")
-      
-      axis(2, col = "gray17", col.ticks = "gray", col.axis = "gray17", tck = -0.05)
-      
-      mtext("Sample",
-            side = 3, line = 1.5, outer = FALSE, adj = 0.5, cex = 1.1, font = 2)
-      
-      mtext(paste("(n = ", n , ")", sep = ""),
-            side = 3, line = 0, outer = FALSE, adj = 0.5, cex = 1.1, font = 1)
-      
-    })
-  }
+## Define Server Logic
+server = function(input, output) {
 
-  ## Create Shiny App
-  shinyApp(ui = ui, server = server)
-  
+  output$distPlot <- renderPlot({
+    set.seed(12678)  # fixed seed for reproducibility
+
+    N <- 1000
+    n <- input$sample_size
+
+    types <- factor(c(rep("Orange", N * 0.2), rep("Blue", N * 0.1), rep("Pink", N * 0.2),
+                      rep("Green", N * 0.3), rep("Purple", N * 0.2)),
+                    levels = c("Orange", "Blue", "Pink", "Green", "Purple"))
+    population <- as.numeric(types)
+
+    selected_indices <- sample(seq_len(N), size = n)
+    data <- data.frame(population = population)
+    data$selected <- 0
+    data$selected[selected_indices] <- 1
+
+    my_colors <- c(
+      "Orange" = "#e34a33",
+      "Blue"   = "#1f78b4",
+      "Pink"   = "#f781bf",
+      "Green"  = "#33a02c",
+      "Purple" = "#6a3d9a"
+    )
+
+    par(mfrow = c(1, 2), cex = 1.2, mar = c(5, 4, 3, 2), oma = c(0, 0, 0, 0))
+
+    max_y_pop <- max(N/3 + 0.15 * N, 10)
+    max_y_sample <- max(n/3 + 0.15 * n, 10)
+
+    hist(data$population,
+         breaks = c(0.5, 1.5, 2.5, 3.5, 4.5, 5.5),
+         main = "Population",
+         xlab = "",
+         ylab = "",
+         col = my_colors,
+         col.main = "#333333",
+         col.axis = "#333333",
+         ylim = c(0, max_y_pop),
+         border = "white",
+         xaxt = "n",
+         yaxt = "n",
+         cex.main = 1.1)
+
+    axis(2, cex.axis = 1.1, col.axis = "#333333")
+    mtext("count", side = 2, line = 2.5, at = max_y_pop * 0.95, cex = 1.1, col = "#333333")
+    axis(1, at = 1:5, labels = c("orange", "blue", "pink", "green", "purple"),
+         cex.axis = 1.0, las = 2, line = 0, col = "#333333", col.axis = "#333333")
+    mtext(paste("N =", N), side = 3, line = 0, cex = 1.3, col = "#333333")
+
+    hist(data$population[data$selected == 1],
+         breaks = c(0.5, 1.5, 2.5, 3.5, 4.5, 5.5),
+         main = "Sample",
+         xlab = "",
+         ylab = "",
+         col = my_colors,
+         col.main = "#333333",
+         col.axis = "#333333",
+         ylim = c(0, max_y_sample),
+         border = "white",
+         xaxt = "n",
+         yaxt = "n",
+         cex.main = 1.1)
+
+    axis(2, cex.axis = 1.1, col.axis = "#333333")
+    mtext("count", side = 2, line = 2.5, at = max_y_sample * 0.95, cex = 1.1, col = "#333333")
+    axis(1, at = 1:5, labels = c("orange", "blue", "pink", "green", "purple"),
+         cex.axis = 1.0, las = 2, line = 0, col = "#333333", col.axis = "#333333")
+    mtext(paste("n =", n), side = 3, line = 0, cex = 1.3, col = "#333333")
+
+  }, bg = "white")
+}
+
+## Run the App
+shinyApp(ui = ui, server = server)

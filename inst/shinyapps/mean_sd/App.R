@@ -3,142 +3,153 @@ library(shiny)
 ## Define UI
 ui = fluidPage(
 
-    ## App Title
-    headerPanel(""),
-    helpText(HTML("<b>"), "Interactive Graph: Understanding Mean and Standard Deviation", HTML("</b>"),
-             style = "margin:0; font-size: 22px; color: #ea3a44"),
-    helpText("By Elena Llaudet, co-author of",
-             a(HTML("<em>"), "Data Analysis for Social Science: A Friendly and Practical Introduction", HTML("</em>"),
-               "(Princeton University Press)",
-               target = "_blank",href = "https://bit.ly/dss_book",
-               style = "color: #797979"), style = "font-size: 18px; color: #797979; margin:0"),
-    helpText(HTML("<br>"), style = "font-size:2px"),
+  ## Match sidebar background to framed text
+  tags$head(
+    tags$style(HTML("
+      .well {
+        background-color: #f1f3f5 !important;
+        border: none;
+        box-shadow: none;
+      }
+    "))
+  ),
 
-    ## Framed Text
-    helpText(HTML("To summarize the main traits of
-             the distribution of a variable, we can use descriptive statistics
-             such as mean and standard deviation:<br>
-               <ul><li>The <b> mean </b> determines the center of the distribution. </li>
-               <li>The <b> standard deviation </b> determines the spread of the distribution,
-             that is, the amount of variation relative to the center. More specifically,
-             it determines the average distance of the observations to the mean.</li></ul>"),
-             style = "text-align: left; font-size: 16px; color: #333333; border-width:3px; border-style:solid; border-color:#ea3a44;
-           padding-top: 0.5em; padding-bottom: 0.5em; padding-right: 1em; padding-left:1em"
-    ), helpText(HTML("<br>"), style = "font-size:2px"),
+  ## App Title
+  h3("Interactive Graph: Mean and Standard Deviation",
+     style = "color: #ea3a44; text-align: center; margin-bottom: 0px;"),
+  p("By Elena Llaudet, co-author of ",
+    a("Data Analysis for Social Science", href = "https://bit.ly/dss_textbook", target = "_blank", style = "color: #797979; text-decoration: none; font-style: italic;"),
+    " (DSS)", style = "text-align: center; color: #797979; margin-bottom: 15px; font-size: 18px;"),
 
-    ## Explanation and Steps
-    helpText("For illustration purposes, we can examine how the mean and standard deviation
-  change the distribution of a normal random variable.", style = "font-size: 16px; color: #333333"),
+  ## Framed Text
+  div(style = "background-color: #f1f3f5;
+              border-left: 4px solid #ea3a44;
+              padding: 15px;
+              margin-bottom: 15px;",
+      p("The mean determines the center of a distribution.
+        The standard deviation determines its spread—roughly, the average distance from each observation to the mean.",
+        style = "margin: 0; font-size: 16px; color: #333333;")),
 
-  helpText(HTML("<ul> <li> <b>"), "STEP 1.", HTML("</b>"),
-        "To begin with, look at the graph below.
-          It is the density histogram of a normal random variable
-          with mean 0 and standard deviation 1.
-           Since the mean is 0, the distribution is centered at 0.
-           And, since the standard deviation is 1,
-           the average distance between the observations and the mean is 1.",
-        HTML("</li>"), style = "font-size: 16px; color: #333333"),
+  ## Explanation
+  helpText("Let's see how changing the mean and standard deviation of a variable affects its distribution:",
+           style = "font-size: 16px; color: #333333; margin-bottom: 15px"),
 
-  helpText(HTML("<li> <b>"), "STEP 2.", HTML("</b>"),
-      "Now, let's see how the distribution changes
-           when we change one of the two descriptive statistics at a time.
-           Let's start by observing how the distribution of the variable changes as a result of changing its mean
-           by using the first slide below.
-           (Once you let go of the slide,
-           R will re-draw the density histogram using the chosen descriptive statistics.)
-           After changing the value of the mean around,
-           notice that the mean does not change the shape of the distribution.
-           The mean of the variable only determines the center of the distribution.
-           When the mean equals 0, for example, the distribution is centered at 0.
-           If we increase the mean to 1, then the distribution will shift to the right and become centered at 1.",
-           HTML("</li>"), style = "font-size: 16px; color: #333333"),
+  ## Steps - All in one block for consistent spacing
+  helpText(HTML("
+    <ul style='line-height: 1.4;'>
+      <li style='margin-bottom: 10px;'><b style='color: #ea3a44;'>STEP 1:</b>
+          The graph below shows the distribution of a normal random variable with mean 0 and standard deviation 1. (Note: We use a normal random variable as our illustration, but these concepts apply to others.)
+          The mean centers the curve at zero; the standard deviation makes the observations be, on average, roughly 1 unit away from the mean.
+      </li>
 
-  helpText(HTML("<li> <b>"), "STEP 3.", HTML("</b>"), "Now, let's observe how the distribution of the variable changes
-      as a result of changing its standard deviation by using the second slide below.
-           After changing the value of the standard deviation around,
-           notice that the standard deviation does not change the center of the distribution.
-           The standard deviation only changes the spread of the distribution.
-           The larger the standard deviation,
-           the larger the average distance of the observations to the mean,
-           and the wider and flatter the distribution will be.
-           When the standard deviation equals 1, for example, the observations are only one unit away from the mean, on average.
-           They are, therefore, relatively close to the mean and the distribution is relatively narrow and high at the center.
-           If we increase the standard deviation to 3, the observations will move farther away from the mean, on average.
-           As a result, the distribution will become more dispersed and lower at the center.",
-           HTML("</li></ul>"), style = "font-size: 16px; color: #333333"),
-  headerPanel(""), ## to add blank space before graph
+      <li style='margin-bottom: 10px;'><b style='color: #ea3a44;'>STEP 2:</b>
+          Use the first slider to change the mean.
+          Notice that this shifts the distribution left or right without changing its shape or spread.
+      </li>
+
+      <li style='margin-bottom: 10px;'><b style='color: #ea3a44;'>STEP 3:</b>
+          Use the second slider to change the standard deviation.
+          Notice that larger standard deviations create wider, flatter distributions, because the observations are, on average, further way from the mean.
+          By contrast, smaller standard deviations create narrower, taller distributions, because the observations are, on average, closer to the mean.
+          However, the center stays the same.
+      </li>
+    </ul>
+  "), style = "font-size: 16px; color: #333333"),
+
+  br(), ## to add blank space before graph
 
   ## Sidebar Layout with Inputs and Outputs
   sidebarLayout(
 
-      # Sidebar Panel for Inputs
-      sidebarPanel(
+    ## Sidebar Panel for Inputs
+    sidebarPanel(
 
-        # Input
-        sliderInput(
-          inputId = "mean",
-          label = "Mean",
-          min = -2,
-          max = 2,
-          value = 0
-        ),
+      ## Mean
+      HTML("<span style='color: #333333; font-size: 15px; display: inline-block; margin-bottom: 2px;'>Mean:</span>"),
+      p("Move this slider to see how the mean changes the center of the distribution.",
+        style = "font-size: 14px; color: #666; text-align: left; margin-top: 0px; margin-bottom: 10px;"),
 
-        # Input
-        sliderInput(
-          inputId = "sd",
-          label = "Standard Deviation",
-          min = 1,
-          max = 3,
-          value = 1
-        )
+      sliderInput(
+        inputId = "mean",
+        label = NULL,
+        min = -2,
+        max = 2,
+        value = 0
       ),
 
-      # Main Panel for Displaying Outputs
-      mainPanel(
+      br(),
 
-        # Output: Graph
-        plotOutput(outputId = "distPlot")
+      ## Standard Deviation
+      HTML("<span style='color: #333333; font-size: 15px; display: inline-block; margin-bottom: 2px;'>Standard Deviation:</span>"),
+      p("Move this slider to see how the standard deviation changes the spread of the distribution.",
+        style = "font-size: 14px; color: #666; text-align: left; margin-top: 0px; margin-bottom: 10px;"),
+
+      sliderInput(
+        inputId = "sd",
+        label = NULL,
+        min = 1,
+        max = 3,
+        value = 1
       )
     ),
 
-  ## Text After Graph
-  headerPanel(""), ## to add blank space before graph
-  helpText("Notes about the graph:
-        The density histogram of a variable is the visual representation
-        of the variable's distribution through bins of different heights.
-        The position of the bins along the x-axis indicates the interval
-        of values and the relative height of the bins
-        implies the relative proportion of the observations in the bins.",
-           style = "font-size: 16px; color: #333333"),
+    ## Main Panel for Displaying Outputs
+    mainPanel(
 
-  )
+      ## Output: Graph (aligned with top of slider)
+      plotOutput(outputId = "distPlot", height = "400px"),
 
-  ## Define Server Logic Required to Draw the Graph
-  server = function(input, output) {
+      ## Text After Graph
+      helpText("Note: A density histogram shows the distribution of a variable through bins of different heights. The x-axis shows the range of values the variable takes, and the height of the bins indicates the relative proportion of the observations taking those values.",
+               style = "font-size: 15px; color: #666; margin-top: 10px;")
+    )
+  ),
+)
 
-    # Graph
-    output$distPlot <- renderPlot({
-      par(mfrow = c(1, 1), cex = 1, mar = c(3, 5, 5, 2))
-      set.seed(678)
-      x.bar <- input$mean
-      sigma <- input$sd
-      x <- rnorm(n = 1e6, mean = x.bar, sd = sigma)
-      hist(x,
-        breaks = 100, freq = FALSE, col = "gray", ylim = c(0, 0.4), xlim = c(-10, 10), border = "white", ylab = "",
-        main = "",
-        xlab = "", axes = F, col.lab = "gray17"
-      )
-      mtext(paste("Normal Random Variable"),
-        side = 3, line = 2.5, outer = FALSE, adj = 0.5, cex = 1.2, font = 2
-      )
-      mtext(paste("Mean = ", x.bar, " and Standard Deviation = ", sigma, sep = ""),
-        side = 3, line = 1, outer = FALSE, adj = 0.5, cex = 1.2, font = 2
-      )
+## Define Server Logic Required to Draw the Graph
+server = function(input, output) {
 
-      axis(1, c(-10, -8, -6, -4, -2, 0, 2, 4, 6, 8, 10), col = "gray17", col.ticks = "gray", col.axis = "gray17", tck = -0.05)
-    })
-  }
+  ## Graph
+  output$distPlot <- renderPlot({
 
-  ## Create Shiny App
-  shinyApp(ui = ui, server = server)
+    # Set parameters
+    x.bar <- input$mean
+    sigma <- input$sd
 
+    # Generate data
+    set.seed(678)
+    x <- rnorm(n = 1e6, mean = x.bar, sd = sigma)
+
+    # Create plot with consistent styling
+    par(mfrow = c(1, 1), cex = 1.2, mar = c(5, 4, 3, 2))
+
+    hist(x,
+         breaks = 100,
+         freq = FALSE,
+         col = "#1f78b4",
+         ylim = c(0, 0.4),
+         xlim = c(-10, 10),
+         border = "white",
+         main = "Distribution",
+         xlab = "",
+         ylab = "",
+         col.main = "#333333",
+         col.axis = "#333333",
+         col.lab = "#333333",
+         cex.main = 1.1)
+
+    # Add "Density" at the top of y-axis
+    mtext("density", side = 2, line = 2.5, at = 0.4 * 0.95, cex = 1.1, col = "#333333")
+
+    # Add "Value" to the right of x-axis
+    mtext("value", side = 1, line = 2.5, at = 10*0.95, cex = 1.1, col = "#333333")
+
+    # Add parameter annotation
+    mtext(paste("Mean =", x.bar, ", Standard Deviation =", sigma),
+          side = 3, line = 0, cex = 1.1, col = "#333333")
+
+  }, bg = "white")
+}
+
+## Create Shiny App
+shinyApp(ui = ui, server = server)
