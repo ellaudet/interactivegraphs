@@ -94,7 +94,7 @@ ui = fluidPage(
 
       ## Text After Graph
       helpText("Note: n is the total sample size, n_t is the number of individuals in the treatment group, and n_c is the number in the control group.",
-               style = "font-size: 15px; color: #666; margin-top: 10px;")
+               style = "font-size: 15px; color: #666; margin-top: 0px;")
     )
   ),
 )
@@ -102,10 +102,10 @@ ui = fluidPage(
 ## Define Server Logic Required to Draw the Graph
 server = function(input, output) {
 
-  ## Graph
-  output$distPlot <- renderPlot({
-
+  # Create reactive for data generation and assignment
+  assignment_data <- reactive({
     n <- input$sample_size
+
     # Create factor data but convert to numeric for hist() compatibility
     types <- factor(c(rep("Orange", n * 0.2), rep("Blue", n * 0.1), rep("Pink", n * 0.2),
                       rep("Green", n * 0.3), rep("Purple", n * 0.2)),
@@ -115,6 +115,21 @@ server = function(input, output) {
     set.seed(678)
     treated <- sample(c(0, 1), size = length(volunteers), replace = TRUE, prob = c(0.5, 0.5))
     data <- data.frame(volunteers, treated)
+
+    list(
+      data = data,
+      n = n
+    )
+  })
+
+  ## Graph
+  output$distPlot <- renderPlot({
+
+    # Get assignment data
+    assignment_info <- assignment_data()
+    data <- assignment_info$data
+    n <- assignment_info$n
+
     my_colors <- c(
       "Orange" = "#e34a33",
       "Blue"   = "#1f78b4",

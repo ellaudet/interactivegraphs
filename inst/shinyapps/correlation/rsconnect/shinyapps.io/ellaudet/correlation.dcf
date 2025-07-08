@@ -1,0 +1,12 @@
+name: correlation
+title: correlation
+username: ellaudet
+account: ellaudet
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 15049566
+bundleId: 10584630
+url: https://ellaudet.shinyapps.io/correlation/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE

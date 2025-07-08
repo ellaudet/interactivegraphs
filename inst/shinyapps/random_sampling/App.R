@@ -72,7 +72,7 @@ ui = fluidPage(
     mainPanel(
       plotOutput("distPlot", height = "400px"),
       helpText("Note: N is the total population size and n is the sample size.",
-               style = "font-size: 15px; color: #666; margin-top: 10px;")
+               style = "font-size: 15px; color: #666; margin-top: 0px;")
     )
   )
 )
@@ -80,21 +80,37 @@ ui = fluidPage(
 ## Define Server Logic
 server = function(input, output) {
 
-  output$distPlot <- renderPlot({
-    set.seed(12678)  # fixed seed for reproducibility
+  # Pre-generate population data once - key optimization
+  N <- 1000
+  set.seed(12678)  # fixed seed for reproducibility
 
-    N <- 1000
+  types <- factor(c(rep("Orange", N * 0.2), rep("Blue", N * 0.1), rep("Pink", N * 0.2),
+                    rep("Green", N * 0.3), rep("Purple", N * 0.2)),
+                  levels = c("Orange", "Blue", "Pink", "Green", "Purple"))
+  population <- as.numeric(types)
+
+  # Create reactive for sample data
+  sample_data <- reactive({
     n <- input$sample_size
 
-    types <- factor(c(rep("Orange", N * 0.2), rep("Blue", N * 0.1), rep("Pink", N * 0.2),
-                      rep("Green", N * 0.3), rep("Purple", N * 0.2)),
-                    levels = c("Orange", "Blue", "Pink", "Green", "Purple"))
-    population <- as.numeric(types)
-
+    # Sample from the pre-generated population
     selected_indices <- sample(seq_len(N), size = n)
     data <- data.frame(population = population)
     data$selected <- 0
     data$selected[selected_indices] <- 1
+
+    list(
+      data = data,
+      n = n
+    )
+  })
+
+  output$distPlot <- renderPlot({
+
+    # Get sample data
+    sample_info <- sample_data()
+    data <- sample_info$data
+    n <- sample_info$n
 
     my_colors <- c(
       "Orange" = "#e34a33",

@@ -1,0 +1,12 @@
+name: random_sampling
+title: random_sampling
+username: ellaudet
+account: ellaudet
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 14991392
+bundleId: 10584689
+url: https://ellaudet.shinyapps.io/random_sampling/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE

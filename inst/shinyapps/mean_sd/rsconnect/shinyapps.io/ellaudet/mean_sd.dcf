@@ -1,0 +1,12 @@
+name: mean_sd
+title: mean_sd
+username: ellaudet
+account: ellaudet
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 14991401
+bundleId: 10584650
+url: https://ellaudet.shinyapps.io/mean_sd/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE

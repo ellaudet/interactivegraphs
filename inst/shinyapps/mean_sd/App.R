@@ -77,8 +77,6 @@ ui = fluidPage(
         value = 0
       ),
 
-      br(),
-
       ## Standard Deviation
       HTML("<span style='color: #333333; font-size: 15px; display: inline-block; margin-bottom: 2px;'>Standard Deviation:</span>"),
       p("Move this slider to see how the standard deviation changes the spread of the distribution.",
@@ -101,7 +99,7 @@ ui = fluidPage(
 
       ## Text After Graph
       helpText("Note: A density histogram shows the distribution of a variable through bins of different heights. The x-axis shows the range of values the variable takes, and the height of the bins indicates the relative proportion of the observations taking those values.",
-               style = "font-size: 15px; color: #666; margin-top: 10px;")
+               style = "font-size: 15px; color: #666; margin-top: 0px;")
     )
   ),
 )
@@ -109,20 +107,27 @@ ui = fluidPage(
 ## Define Server Logic Required to Draw the Graph
 server = function(input, output) {
 
+  # Pre-generate base data once - this is the key optimization
+  set.seed(678)
+  base_data <- rnorm(n = 1e6, mean = 0, sd = 1)
+
+  # Create reactive for transformed data
+  transformed_data <- reactive({
+    # Transform the base data to match current parameters
+    # This is much faster than generating new random numbers
+    input$mean + input$sd * base_data
+  })
+
   ## Graph
   output$distPlot <- renderPlot({
 
-    # Set parameters
-    x.bar <- input$mean
-    sigma <- input$sd
+    # Get the transformed data
+    x <- transformed_data()
 
-    # Generate data
-    set.seed(678)
-    x <- rnorm(n = 1e6, mean = x.bar, sd = sigma)
-
-    # Create plot with consistent styling
+    # Set plot parameters once
     par(mfrow = c(1, 1), cex = 1.2, mar = c(5, 4, 3, 2))
 
+    # Create histogram
     hist(x,
          breaks = 100,
          freq = FALSE,
@@ -130,7 +135,7 @@ server = function(input, output) {
          ylim = c(0, 0.4),
          xlim = c(-10, 10),
          border = "white",
-         main = "Distribution",
+         main = "Distribution of Normal Random Variable",
          xlab = "",
          ylab = "",
          col.main = "#333333",
@@ -145,7 +150,7 @@ server = function(input, output) {
     mtext("value", side = 1, line = 2.5, at = 10*0.95, cex = 1.1, col = "#333333")
 
     # Add parameter annotation
-    mtext(paste("Mean =", x.bar, ", Standard Deviation =", sigma),
+    mtext(paste("Mean =", input$mean, ", Standard Deviation =", input$sd),
           side = 3, line = 0, cex = 1.1, col = "#333333")
 
   }, bg = "white")

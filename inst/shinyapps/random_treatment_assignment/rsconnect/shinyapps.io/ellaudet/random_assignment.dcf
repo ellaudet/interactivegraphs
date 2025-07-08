@@ -1,0 +1,12 @@
+name: random_assignment
+title: random_assignment
+username: ellaudet
+account: ellaudet
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 14991361
+bundleId: 10584706
+url: https://ellaudet.shinyapps.io/random_assignment/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
