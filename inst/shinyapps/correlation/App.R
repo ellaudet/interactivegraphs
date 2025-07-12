@@ -118,9 +118,9 @@ ui = fluidPage(
       ## Text After Graph
       helpText(HTML("Notes: A scatterplot enables us to visualize the relationship between two variables by
               plotting one variable against the other in two-dimensional space. Each dot represents an observation.
-               The line of best fit is the line that best summarizes the data cloud.
+              The line of best fit is the line that best summarizes the data cloud.
               For illustration purposes, here we use <em>weak</em>, <em>moderate</em>, and <em>strong</em>,
-               but note that what is considered a <em>strong</em> correlation in one field may be considered <em>weak</em> in another."),
+              but note that what is considered a <em>weak</em> correlation in one field may be considered <em>strong</em> in another."),
                style = "font-size: 15px; color: #666; margin-top: 0px;")
     )
   ),
